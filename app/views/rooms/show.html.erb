@@ -1,0 +1,31 @@
+<div class="offset-3 col-sm-6">
+
+  <% @entries.each do |e| %>
+    <% next if e.user.id == @current_user.id %>
+    <div class="text-center mt-5">
+      <div><%= render partial: '/users/user_image', locals: { user: e.user } %></div>
+      <strong><a href="/users/<%= e.user.id %>" class="h2"><%= e.user.name%></a></strong>
+    </div>
+  <% end %>
+
+  <div class="mt-5">
+  <% if @messages.present? %>
+    <% @messages.each do |m| %>
+      <p style="word-wrap:break-word;"><%= safe_join(m.message.split("\n"), tag(:br)) %></p>
+      <small> <a href="/users/<%= m.user_id %>"><%= m.user.name %></a></small>
+      <hr>
+    <% end %>
+  <% else %>
+    <p class="text-center">メッセージはまだありません</p>
+  <% end %>
+  <%= paginate @messages %>
+  </div>
+
+  <%= form_with(model: @message, local: true) do |f| %>
+    <%= f.text_area :message, placeholder: "メッセージを入力して下さい", class: 'form-control', rows: 4 %>
+    <%= f.hidden_field :room_id, value: @room.id %>
+    <%= f.submit '送信', class: 'btn btn-primary btn-block mt-3' %>
+  <% end %>
+
+  <%= link_to '募集一覧', boards_path, class: 'btn btn-outline-dark mt-3' %>
+</div>

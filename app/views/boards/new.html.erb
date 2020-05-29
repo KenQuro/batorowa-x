@@ -1,0 +1,7 @@
+<div class="text-center">
+  <h1>募集作成</h1>
+  <div class="">
+    <%= link_to '募集一覧', boards_path, class: 'btn btn-outline-dark' %>
+  </div>
+</div>
+<%= render partial: 'form', locals: { board: @board } %>

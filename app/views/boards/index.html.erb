@@ -1,0 +1,34 @@
+<div class="row mt-3">
+  <div class="col-md-2 offset-md-2 mb-3">
+    <div class="boards__linkBox">
+      <%= form_with url: boards_path, method: :get, class: 'boards__searchForm' do %>
+        <%= select_tag :tag_id,
+                        options_from_collection_for_select(Tag.all, :id, :name, params[:tag_id]),
+                        {
+                          prompt: 'タグで絞り込み',
+                          class: 'form-control boards__select',
+                          onchange: 'submit(this.form);'
+                        }
+        %>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <%= link_to '新規作成', new_board_path, class: 'btn btn-outline-dark' %>
+  </div>
+  <% if flash[:success] %>
+    <div class="alert alert-primary offset-lg-2 col-lg-8 mt-3"><%= flash[:success] %></div>
+  <% end %>
+</div>
+
+<div class="row">
+  <div class="col-md-8 offset-lg-2">
+  <ul class="list-unstyled">
+    <% @boards.each do |board| %>
+      <li class="media mb-3">
+        <%= render board %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+<%= paginate @boards %>
